@@ -36,9 +36,6 @@ export default {
         };
     },
     methods: {
-        getlastItem(myArray) {
-            return myArray[myArray.length - 1];
-        },
         fadeMe: function () {
             this.show = !this.show
         },
