@@ -1,17 +1,28 @@
+<style>
+@import '@/assets/css/ProductCard.css';
+</style>
 <template>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <div class="col" v-for="product in products" :key="product.id">
+            <div class="col d-flex align-items-stretch" v-for="product in products" :key="product.id">
                 <div class="card">
-                    <img :src="product.thumbnail" class="card-img-top img-thumbnail p-0 border-0" height="200" alt="">
-                    <div class="card-body">
+                    <img :src="product.thumbnail" class="card-img-top p-0 border-0 object-fit-cover" height="200" alt="">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ product.title }} - {{ product.brand }}</h5>
                         <p class="card-text">{{ product.description }}</p>
-                        <a href="#" class="btn btn-primary">Read More</a>
+                        <a href="#" @click.prevent="fadeMe" class="btn btn-primary mt-auto align-self-start w-100">Add
+                            to cart</a>
                     </div>
                 </div>
             </div>
         </div>
+        <Transition @enter="fadeAlert">
+            <div v-if="show" class="message-wrapper position-fixed top-0 mt-4 start-0 w-100">
+                <div class="alert alert-success w-75 mx-auto" role="alert">
+                    Product Added to cart successfully!
+                </div>
+            </div>
+        </Transition>
     </div>
 </template>
 
@@ -20,13 +31,23 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            products: null
+            products: null,
+            show: false
         };
     },
     methods: {
         getlastItem(myArray) {
             return myArray[myArray.length - 1];
         },
+        fadeMe: function () {
+            this.show = !this.show
+        },
+        fadeAlert() {
+            var that = this;
+            setTimeout(function () {
+                that.show = false;
+            }, 2000);
+        }
     },
     mounted() {
         axios.get('https://dummyjson.com/products')
