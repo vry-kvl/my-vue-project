@@ -10,7 +10,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ product.title }} - {{ product.brand }}</h5>
                         <p class="card-text">{{ product.description }}</p>
-                        <a href="#" @click.prevent="fadeMe" class="btn btn-primary mt-auto align-self-start w-100">Add
+                        <a href="#" @click.prevent="fadeMe(product)" class="btn btn-primary mt-auto align-self-start w-100">Add
                             to cart</a>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
         <Transition @enter="fadeAlert">
             <div v-if="show" class="message-wrapper position-fixed top-0 mt-4 start-0 w-100">
                 <div class="alert alert-success w-75 mx-auto" role="alert">
-                    Product Added to cart successfully!
+                    <b>{{ addedProductTitle }}</b> is successfully added!
                 </div>
             </div>
         </Transition>
@@ -32,12 +32,14 @@ export default {
     data() {
         return {
             products: null,
-            show: false
+            show: false,
+            addedProductTitle: null
         };
     },
     methods: {
-        fadeMe: function () {
+        fadeMe: function (product) {
             this.show = !this.show
+            this.addedProductTitle = product.title.concat(' - ').concat(product.brand);
         },
         fadeAlert() {
             var that = this;
